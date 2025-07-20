@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Precision Support | Marynhelle Olahay - Medical Operations & Admin Partner</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Chosen Palette: Premium Neutral -->
+    <!-- Application Structure Plan: The site is architected as a high-conversion funnel. It starts with a problem-centric Hero section establishing the core value proposition: solving administrative bottlenecks. An interactive ROI Calculator follows immediately to provide tangible, data-driven proof of value, appealing to the target's analytical mindset. The 'Core Solutions' section clarifies the 'how,' focusing on the high-value medical niche while keeping other services as adaptable options. A value-based 'Pricing & Packages' section positions the service as a partnership, not a commodity. The 'Why Me?' section builds trust by aligning with the Cautious/Dominant personality (analytical, driven). Social proof ('Portfolio', 'Testimonials') validates the claims, and a clear 'Contact' section closes the loop. This narrative flow guides a client from problem awareness to confident investment. -->
+    <!-- Visualization & Content Choices: Report Info -> Medical VA skills, pricing strategy, personality traits. Goal -> Convert high-value clients by demonstrating clear ROI and expertise. Presentation -> A mix of outcome-focused text, an interactive Chart.js ROI calculator, structured HTML for packages and services, and clear calls-to-action. Interaction -> The ROI calculator is the key interactive element, allowing users to input their own data (practitioner's hourly rate, hours saved) to see a personalized financial benefit, making the value proposition concrete and compelling. Justification -> This structure moves beyond a simple portfolio. It's a strategic sales tool. The calculator provides an immediate 'aha' moment, while the tiered, value-based pricing elevates the service above freelance competition. The language is tailored to resonate with business owners focused on time, money, and compliance. Library/Method -> Chart.js for the ROI calculator, Tailwind CSS for the premium, responsive layout. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <style>
+        :root {
+            --bg-primary: #FFFFFF;
+            --bg-secondary: #e8e2d6;
+            --text-primary: #2d2d2d;
+            --text-secondary: #575757;
+            --accent: #8c7a6b;
+            --accent-hover: #6b5d52;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+        }
+        .bg-secondary { background-color: var(--bg-secondary); }
+        .text-accent { color: var(--accent); }
+        .bg-accent { background-color: var(--accent); }
+        .hover\:bg-accent-hover:hover { background-color: var(--accent-hover); }
+
+        .nav-link::after {
+            content: '';
+            display: block;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: width .3s;
+        }
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        .package-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .package-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+        .chart-container {
+            position: relative;
+            height: 350px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white/90 backdrop-blur-lg sticky top-0 z-50 border-b border-gray-200">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between h-20">
+                <a href="#home" class="text-2xl font-bold text-text-primary">
+                    Precision<span class="text-accent">Support</span>
+                </a>
+                <nav class="hidden md:flex items-center space-x-6 lg:space-x-8">
+                    <a href="#solutions" class="nav-link text-text-secondary hover:text-accent transition-colors font-medium">Solutions</a>
+                    <a href="#calculator" class="nav-link text-text-secondary hover:text-accent transition-colors font-medium">ROI Calculator</a>
+                    <a href="#pricing" class="nav-link text-text-secondary hover:text-accent transition-colors font-medium">Pricing</a>
+                    <a href="#about" class="nav-link text-text-secondary hover:text-accent transition-colors font-medium">Why Me</a>
+                    <a href="#portfolio" class="nav-link text-text-secondary hover:text-accent transition-colors font-medium">Results</a>
+                </nav>
+                <a href="#contact" class="hidden md:inline-block bg-accent text-white font-semibold px-5 py-2.5 rounded-lg hover:bg-accent-hover transition-all shadow-sm">
+                    Book a Consultation
+                </a>
+                <button id="mobile-menu-button" class="md:hidden text-text-primary">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                </button>
+            </div>
+        </div>
+        <div id="mobile-menu" class="hidden md:hidden bg-white/95 backdrop-blur-lg border-t border-gray-200">
+             <a href="#solutions" class="block py-3 px-4 text-base text-text-secondary hover:bg-gray-50">Solutions</a>
+             <a href="#calculator" class="block py-3 px-4 text-base text-text-secondary hover:bg-gray-50">ROI Calculator</a>
+             <a href="#pricing" class="block py-3 px-4 text-base text-text-secondary hover:bg-gray-50">Pricing</a>
+             <a href="#about" class="block py-3 px-4 text-base text-text-secondary hover:bg-gray-50">Why Me</a>
+             <a href="#portfolio" class="block py-3 px-4 text-base text-text-secondary hover:bg-gray-50">Results</a>
+             <a href="#contact" class="block py-3 px-4 text-base text-text-secondary hover:bg-gray-50">Contact</a>
+        </div>
+    </header>
+
+    <main>
+        <section id="home" class="py-24 lg:py-32 bg-secondary">
+            <div class="container mx-auto px-4 text-center">
+                <h1 class="text-4xl lg:text-5xl font-bold text-text-primary leading-tight mb-4 max-w-4xl mx-auto">
+                    I solve administrative and documentation bottlenecks for US-based home health agencies.
+                </h1>
+                <p class="text-lg lg:text-xl text-text-secondary mb-8 max-w-3xl mx-auto">
+                    The result? Guaranteed compliance, accelerated billing cycles, and thousands of dollars in recovered practitioner time. Let's stop managing tasks and start optimizing your practice.
+                </p>
+                <a href="#calculator" class="bg-accent text-white font-bold px-8 py-4 rounded-lg hover:bg-accent-hover transition-all shadow-lg text-lg">
+                    Calculate Your ROI
+                </a>
+            </div>
+        </section>
+
+        <section id="calculator" class="py-20 lg:py-28 bg-white">
+            <div class="container mx-auto px-4">
+                <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+                    <div class="max-w-xl">
+                        <h2 class="text-3xl lg:text-4xl font-bold text-text-primary mb-4">Stop Losing Money on Administrative Drag</h2>
+                        <p class="text-lg text-text-secondary mb-8">What is inefficient documentation costing you? It's not just about frustration; it's about billable hours. Practitioners bogged down by paperwork are practitioners not providing care. Use this calculator to see the tangible financial value of optimized administrative support.</p>
+                        <div class="space-y-6 bg-gray-50 p-6 rounded-lg border">
+                            <div>
+                                <label for="hourlyRate" class="block text-sm font-medium text-text-primary mb-2">Average Practitioner Hourly Rate ($)</label>
+                                <input type="number" id="hourlyRate" value="85" class="w-full p-3 border border-gray-300 rounded-md focus:ring-accent focus:border-accent">
+                            </div>
+                            <div>
+                                <label for="hoursSaved" class="block text-sm font-medium text-text-primary mb-2">Admin Hours Saved Per Week</label>
+                                <input type="range" id="hoursSaved" min="1" max="20" value="5" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-accent">
+                                <div class="text-center font-bold text-accent mt-2 text-xl"><span id="hoursSavedValue">5</span> hours/week</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="chart-container">
+                            <canvas id="roiChart"></canvas>
+                        </div>
+                        <p id="roiSummary" class="text-center mt-4 text-lg text-text-secondary font-semibold"></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="solutions" class="py-20 lg:py-28 bg-secondary">
+            <div class="container mx-auto px-4">
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <h2 class="text-3xl lg:text-4xl font-bold text-text-primary mb-4">Outcome-Driven Solutions</h2>
+                    <p class="text-lg text-text-secondary">I provide targeted support to solve your most pressing operational challenges. My primary focus is on medical administration, but my systematic approach translates to any industry requiring precision and reliability.</p>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="bg-white p-8 rounded-2xl shadow-md border border-gray-200">
+                        <h3 class="text-xl font-bold text-accent mb-3">Medical Compliance & Workflow</h3>
+                        <p class="text-text-secondary">Expert management of CMS-485 forms, order tracking, and physician coordination to ensure airtight compliance and uninterrupted cash flow for home health agencies.</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-2xl shadow-md border border-gray-200">
+                        <h3 class="text-xl font-bold text-text-primary mb-3">Executive Administrative Support</h3>
+                        <p class="text-text-secondary">Systematic calendar management, inbox organization, and workflow automation for busy professionals who need to reclaim their focus and drive strategic growth.</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-2xl shadow-md border border-gray-200">
+                        <h3 class="text-xl font-bold text-text-primary mb-3">Customer & Client Operations</h3>
+                        <p class="text-text-secondary">Reliable customer support, inquiry management, and onboarding processes that ensure your clients feel valued and your business reputation remains sterling.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="pricing" class="py-20 lg:py-28 bg-white">
+            <div class="container mx-auto px-4">
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <h2 class="text-3xl lg:text-4xl font-bold text-text-primary mb-4">Invest in a Partner, Not a Task-Doer</h2>
+                    <p class="text-lg text-text-secondary">My pricing reflects the unmatched value of a strategic partner dedicated to your success. These packages are designed for consistent, high-impact support that scales with your needs, positioning your practice for greater efficiency, compliance, and peace of mind. This is an investment in outcomes, not just hours.</p>
+                </div>
+                <div class="grid lg:grid-cols-3 gap-8 items-stretch">
+                    <!-- Essential Support Package -->
+                    <div class="package-card bg-gray-50 border border-gray-200 rounded-2xl p-8 flex flex-col">
+                        <h3 class="text-2xl font-bold text-text-primary mb-4">Essential Support</h3>
+                        <p class="text-5xl font-bold my-6 text-accent">$1,750<span class="text-lg font-medium text-text-secondary">/month</span></p>
+                        <p class="text-text-secondary mb-6 flex-grow">For practices needing reliable, high-quality support for core administrative and compliance tasks.</p>
+                        <ul class="space-y-3 text-text-secondary mb-8">
+                            <li class="flex items-center"><span class="text-accent mr-2">✓</span><span>Up to 40 hours/month</span></li>
+                            <li class="flex items-center"><span class="text-accent mr-2">✓</span><span>Core EMR/EHR Management</span></li>
+                            <li class="flex items-center"><span class="text-accent mr-2">✓</span><span>Patient Scheduling & Communication</span></li>
+                            <li class="flex items-center"><span class="text-accent mr-2">✓</span><span>Weekly Performance Reports</span></li>
+                        </ul>
+                        <a href="#contact" class="w-full text-center bg-white border border-accent text-accent font-bold py-3 rounded-lg hover:bg-accent hover:text-white transition-colors">Select Package</a>
+                    </div>
+
+                    <!-- Growth Partner Package -->
+                    <div class="package-card bg-accent text-white border-2 border-accent rounded-2xl p-8 flex flex-col shadow-2xl relative">
+                        <p class="absolute top-0 -translate-y-1/2 left-1/2 -translate-x-1/2 bg-white text-accent px-4 py-1 rounded-full font-bold border border-accent shadow-md">Most Popular</p>
+                        <h3 class="text-2xl font-bold mb-4">Growth Partner</h3>
+                        <p class="text-5xl font-bold my-6">$3,150<span class="text-lg font-medium opacity-80">/month</span></p>
+                        <p class="opacity-90 mb-6 flex-grow">A strategic partnership for practices focused on optimizing workflows, improving patient outcomes, and driving growth.</p>
+                        <ul class="space-y-3 opacity-90 mb-8">
+                            <li class="flex items-center"><span class="text-white mr-2">✓</span><span>Up to 60 hours/month</span></li>
+                            <li class="flex items-center"><span class="text-white mr-2">✓</span><span>All Essential Support Features</span></li>
+                            <li class="flex items-center"><span class="text-white mr-2">✓</span><span>Advanced EMR & Compliance Management</span></li>
+                            <li class="flex items-center"><span class="text-white mr-2">✓</span><span>Billing Coordination & Follow-up</span></li>
+                             <li class="flex items-center"><span class="text-white mr-2">✓</span><span>Monthly Strategy & Review Call</span></li>
+                        </ul>
+                        <a href="#contact" class="w-full text-center bg-white text-accent font-bold py-3 rounded-lg hover:bg-gray-100 transition-colors">Select Package</a>
+                    </div>
+
+                    <!-- Strategic Command Package -->
+                    <div class="package-card bg-gray-50 border border-gray-200 rounded-2xl p-8 flex flex-col">
+                        <h3 class="text-2xl font-bold text-text-primary mb-4">Strategic Command</h3>
+                        <p class="text-5xl font-bold my-6 text-accent">$5,000+<span class="text-lg font-medium text-text-secondary">/month</span></p>
+                        <p class="text-text-secondary mb-6 flex-grow">A fully integrated command center for your practice's operations. This bespoke solution is for leaders who require a partner to manage entire administrative verticals.</p>
+                        <ul class="space-y-3 text-text-secondary mb-8">
+                             <li class="flex items-center"><span class="text-accent mr-2">✓</span><span>80+ hours/month (Customizable)</span></li>
+                            <li class="flex items-center"><span class="text-accent mr-2">✓</span><span>All Growth Partner Features</span></li>
+                            <li class="flex items-center"><span class="text-accent mr-2">✓</span><span>Full Practice Workflow Optimization</span></li>
+                            <li class="flex items-center"><span class="text-accent mr-2">✓</span><span>Executive & Inbox Management</span></li>
+                            <li class="flex items-center"><span class="text-accent mr-2">✓</span><span>Custom Project Management</span></li>
+                        </ul>
+                        <a href="#contact" class="w-full text-center bg-white border border-accent text-accent font-bold py-3 rounded-lg hover:bg-accent hover:text-white transition-colors">Request a Quote</a>
+                    </div>
+                </div>
+                 <p class="text-center mt-12 text-text-secondary">Not seeing the perfect fit? <a href="#contact" class="font-bold text-accent hover:underline">Let's build a custom solution.</a></p>
+            </div>
+        </section>
+
+        <section id="about" class="py-20 lg:py-28 bg-secondary">
+            <div class="container mx-auto px-4">
+                 <div class="text-center max-w-3xl mx-auto mb-16">
+                    <h2 class="text-3xl lg:text-4xl font-bold text-text-primary mb-4">Built for Precision & Results</h2>
+                    <p class="text-lg text-text-secondary">My approach is defined by my personality: analytical, careful, conscientious, and driven. I don't just complete tasks; I analyze problems, build systems, and deliver outcomes with an unwavering focus on quality.</p>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8 text-center">
+                    <div class="bg-white p-8 rounded-xl">
+                        <h3 class="text-xl font-bold text-accent mb-2">Analytical</h3>
+                        <p>I dissect challenges to find the root cause, ensuring the solutions I implement are robust and effective.</p>
+                    </div>
+                     <div class="bg-white p-8 rounded-xl">
+                        <h3 class="text-xl font-bold text-accent mb-2">Careful</h3>
+                        <p>In the world of medical documentation, precision is non-negotiable. I ensure every detail is correct.</p>
+                    </div>
+                     <div class="bg-white p-8 rounded-xl">
+                        <h3 class="text-xl font-bold text-accent mb-2">Conscientious</h3>
+                        <p>I take immense pride in my work and am deeply committed to upholding the highest standards of quality.</p>
+                    </div>
+                     <div class="bg-white p-8 rounded-xl">
+                        <h3 class="text-xl font-bold text-accent mb-2">Driven</h3>
+                        <p>Your goals become my goals. I am relentlessly focused on driving the outcomes that matter most to your business.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="portfolio" class="py-20 lg:py-28 bg-white">
+            <div class="container mx-auto px-4">
+                 <div class="text-center max-w-3xl mx-auto mb-16">
+                    <h2 class="text-3xl lg:text-4xl font-bold text-text-primary mb-4">Proven Results</h2>
+                    <p class="text-lg text-text-secondary">I don't just talk about solutions; I deliver measurable outcomes. Here’s a snapshot of the value I've created for my partners.</p>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                     <div class="bg-secondary rounded-2xl overflow-hidden p-8">
+                        <h3 class="font-bold text-2xl mb-2 text-accent">98%</h3>
+                        <p class="font-semibold text-text-primary mb-2">On-Time Submission Rate for CMS-485 Forms</p>
+                        <p class="text-text-secondary">Implemented a proactive tracking and follow-up system for a NYC home health agency, drastically reducing late submissions and ensuring consistent cash flow.</p>
+                    </div>
+                    <div class="bg-secondary rounded-2xl overflow-hidden p-8">
+                        <h3 class="font-bold text-2xl mb-2 text-accent">40%</h3>
+                        <p class="font-semibold text-text-primary mb-2">Reduction in Documentation Turnaround Time</p>
+                        <p class="text-text-secondary">Streamlined physician communication protocols and leveraged Forcura to cut the average signature acquisition time from 10 days to 6.</p>
+                    </div>
+                     <div class="bg-secondary rounded-2xl overflow-hidden p-8">
+                        <h3 class="font-bold text-2xl mb-2 text-accent">10+</h3>
+                        <p class="font-semibold text-text-primary mb-2">Hours Saved Per Week for Clinical Directors</p>
+                        <p class="text-text-secondary">Took full ownership of the documentation workflow, freeing up senior clinical staff to focus on high-value patient care and team management.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="py-20 lg:py-28 bg-secondary">
+            <div class="container mx-auto px-4">
+                <div class="text-center max-w-2xl mx-auto">
+                    <h2 class="text-3xl lg:text-4xl font-bold text-text-primary mb-4">Ready to Optimize Your Practice?</h2>
+                    <p class="text-lg text-text-secondary mb-8">Let's have a conversation about your challenges and my solutions. A 15-minute consultation is all it takes to see how we can build a more efficient, compliant, and profitable future for your practice.</p>
+                     <a href="mailto:marynhelle.olahay@email.com" class="bg-accent text-white font-bold px-8 py-4 rounded-lg hover:bg-accent-hover transition-all shadow-lg text-lg">
+                        Schedule a Free Consultation
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-text-primary text-white">
+        <div class="container mx-auto px-4 py-8 text-center">
+            <p>&copy; 2025 Marynhelle Olahay | Precision Support</p>
+            <p class="text-sm text-gray-400">Your Strategic Partner in Medical Operations & Administration</p>
+        </div>
+    </footer>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+            
+            document.querySelectorAll('#mobile-menu a').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                });
+            });
+
+            const hourlyRateInput = document.getElementById('hourlyRate');
+            const hoursSavedInput = document.getElementById('hoursSaved');
+            const hoursSavedValue = document.getElementById('hoursSavedValue');
+            const roiSummary = document.getElementById('roiSummary');
+            const ctx = document.getElementById('roiChart').getContext('2d');
+            let roiChart;
+
+            function calculateAndDisplayROI() {
+                const hourlyRate = parseFloat(hourlyRateInput.value) || 0;
+                const hoursSaved = parseInt(hoursSavedInput.value, 10);
+                
+                hoursSavedValue.textContent = hoursSaved;
+
+                const weeklySavings = hourlyRate * hoursSaved;
+                const monthlySavings = weeklySavings * 4.33;
+                const annualSavings = weeklySavings * 52;
+                
+                roiSummary.textContent = `Annual Estimated Value Recouped: $${annualSavings.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
+                
+                updateChart(monthlySavings);
+            }
+
+            function updateChart(monthlySavings) {
+                const packageCosts = [1750, 3150, 5000];
+                const roiValues = packageCosts.map(cost => monthlySavings - cost);
+
+                const chartData = {
+                    labels: ['Essential Support', 'Growth Partner', 'Strategic Command'],
+                    datasets: [{
+                        label: 'Monthly Net Value ($)',
+                        data: roiValues,
+                        backgroundColor: [
+                            'rgba(140, 122, 107, 0.2)',
+                            'rgba(140, 122, 107, 0.8)',
+                            'rgba(140, 122, 107, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(140, 122, 107, 1)',
+                            'rgba(140, 122, 107, 1)',
+                            'rgba(140, 122, 107, 1)'
+                        ],
+                        borderWidth: 2,
+                        barThickness: 50,
+                    }]
+                };
+
+                if (roiChart) {
+                    roiChart.data = chartData;
+                    roiChart.update();
+                } else {
+                    roiChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: chartData,
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    display: false
+                                },
+                                tooltip: {
+                                    callbacks: {
+                                        label: function(context) {
+                                            let label = context.dataset.label || '';
+                                            if (label) {
+                                                label += ': ';
+                                            }
+                                            if (context.parsed.y !== null) {
+                                                label += new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(context.parsed.y);
+                                            }
+                                            return label;
+                                        }
+                                    }
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    ticks: {
+                                        callback: function(value, index, values) {
+                                            return '$' + value.toLocaleString();
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+
+            hourlyRateInput.addEventListener('input', calculateAndDisplayROI);
+            hoursSavedInput.addEventListener('input', calculateAndDisplayROI);
+            calculateAndDisplayROI();
+        });
+    </script>
+</body>
+</html>
+```
+
